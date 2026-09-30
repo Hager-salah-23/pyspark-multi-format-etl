@@ -1,0 +1,255 @@
+======================================================================
+READING RAW PARQUET DATA
+======================================================================
+
+========== RAW DATA ==========
++-------------------+---+----------+---------+------------------------+------+--------------+----------------+----------------------+----------+---------+------------------------+--------+
+|registration_dttm  |id |first_name|last_name|email                   |gender|ip_address    |cc              |country               |birthdate |salary   |title                   |comments|
++-------------------+---+----------+---------+------------------------+------+--------------+----------------+----------------------+----------+---------+------------------------+--------+
+|2016-02-03 09:55:29|1  |Amanda    |Jordan   |ajordan0@com.com        |Female|1.197.201.2   |6759521864920116|Indonesia             |3/8/1971  |49756.53 |Internal Auditor        |1E+02   |
+|2016-02-03 19:04:03|2  |Albert    |Freeman  |afreeman1@is.gd         |Male  |218.111.175.34|                |Canada                |1/16/1968 |150280.17|Accountant IV           |        |
+|2016-02-03 03:09:31|3  |Evelyn    |Morgan   |emorgan2@altervista.org |Female|7.161.136.94  |6767119071901597|Russia                |2/1/1960  |144972.51|Structural Engineer     |        |
+|2016-02-03 02:36:21|4  |Denise    |Riley    |driley3@gmpg.org        |Female|140.35.109.83 |3576031598965625|China                 |4/8/1997  |90263.05 |Senior Cost Accountant  |        |
+|2016-02-03 07:05:31|5  |Carlos    |Burns    |cburns4@miitbeian.gov.cn|      |169.113.235.40|5602256255204850|South Africa          |          |NULL     |                        |        |
+|2016-02-03 09:22:34|6  |Kathryn   |White    |kwhite5@google.com      |Female|195.131.81.179|3583136326049310|Indonesia             |2/25/1983 |69227.11 |Account Executive       |        |
+|2016-02-03 10:33:08|7  |Samuel    |Holmes   |sholmes6@foxnews.com    |Male  |232.234.81.197|3582641366974690|Portugal              |12/18/1987|14247.62 |Senior Financial Analyst|        |
+|2016-02-03 08:47:06|8  |Harry     |Howell   |hhowell7@eepurl.com     |Male  |91.235.51.73  |                |Bosnia and Herzegovina|3/1/1962  |186469.43|Web Developer IV        |        |
+|2016-02-03 05:52:53|9  |Jose      |Foster   |jfoster8@yelp.com       |Male  |132.31.53.61  |                |South Korea           |3/27/1992 |231067.84|Software Test Engineer I|1E+02   |
+|2016-02-03 20:29:47|10 |Emily     |Stewart  |estewart9@opensource.org|Female|143.28.251.245|3574254110301671|Nigeria               |1/28/1997 |27234.28 |Health Coach IV         |        |
++-------------------+---+----------+---------+------------------------+------+--------------+----------------+----------------------+----------+---------+------------------------+--------+
+only showing top 10 rows
+
+========== RAW SCHEMA ==========
+root
+ |-- registration_dttm: timestamp (nullable = true)
+ |-- id: integer (nullable = true)
+ |-- first_name: string (nullable = true)
+ |-- last_name: string (nullable = true)
+ |-- email: string (nullable = true)
+ |-- gender: string (nullable = true)
+ |-- ip_address: string (nullable = true)
+ |-- cc: string (nullable = true)
+ |-- country: string (nullable = true)
+ |-- birthdate: string (nullable = true)
+ |-- salary: double (nullable = true)
+ |-- title: string (nullable = true)
+ |-- comments: string (nullable = true)
+
+
+========== DATASET INFORMATION ==========
+Number of rows    : 1000
+Number of columns : 13
+
+Columns:
+['registration_dttm', 'id', 'first_name', 'last_name', 'email', 'gender', 'ip_address', 'cc', 'country', 'birthdate', 'salary', 'title', 'comments']
+
+========== DUPLICATE ID ANALYSIS ==========
+Duplicate IDs: 0
+
+========== AFTER DUPLICATE REMOVAL ==========
+Number of rows: 1000
+
+========== INVALID BIRTHDATES ==========
++---+--------+--------------------------+
+|id |country |birthdate                 |
++---+--------+--------------------------+
+|588|"Bonaire|Saint Eustatius and Saba "|
++---+--------+--------------------------+
+
+
+========== CLEANED DATA ==========
++---+---------------+------------------------+----------------+------+----------------------+----------+----+---------+---------+-----------+----------------------------+------------------+
+|id |full_name      |email                   |email_domain    |gender|country               |birth_date|age |age_group|salary   |salary_band|title                       |data_quality_score|
++---+---------------+------------------------+----------------+------+----------------------+----------+----+---------+---------+-----------+----------------------------+------------------+
+|1  |Amanda Jordan  |ajordan0@com.com        |com.com         |Female|Indonesia             |1971-03-08|55  |50-59    |49756.53 |Under 50K  |Internal Auditor            |6                 |
+|2  |Albert Freeman |afreeman1@is.gd         |is.gd           |Male  |Canada                |1968-01-16|58  |50-59    |150280.17|100K-199K  |Accountant IV               |6                 |
+|3  |Evelyn Morgan  |emorgan2@altervista.org |altervista.org  |Female|Russia                |1960-02-01|66  |60+      |144972.51|100K-199K  |Structural Engineer         |6                 |
+|4  |Denise Riley   |driley3@gmpg.org        |gmpg.org        |Female|China                 |1997-04-08|29  |18-29    |90263.05 |50K-99K    |Senior Cost Accountant      |6                 |
+|5  |Carlos Burns   |cburns4@miitbeian.gov.cn|miitbeian.gov.cn|NULL  |South Africa          |NULL      |NULL|Unknown  |NULL     |Unknown    |NULL                        |3                 |
+|6  |Kathryn White  |kwhite5@google.com      |google.com      |Female|Indonesia             |1983-02-25|43  |40-49    |69227.11 |50K-99K    |Account Executive           |6                 |
+|7  |Samuel Holmes  |sholmes6@foxnews.com    |foxnews.com     |Male  |Portugal              |1987-12-18|38  |30-39    |14247.62 |Under 50K  |Senior Financial Analyst    |6                 |
+|8  |Harry Howell   |hhowell7@eepurl.com     |eepurl.com      |Male  |Bosnia and Herzegovina|1962-03-01|64  |60+      |186469.43|100K-199K  |Web Developer IV            |6                 |
+|9  |Jose Foster    |jfoster8@yelp.com       |yelp.com        |Male  |South Korea           |1992-03-27|34  |30-39    |231067.84|200K+      |Software Test Engineer I    |6                 |
+|10 |Emily Stewart  |estewart9@opensource.org|opensource.org  |Female|Nigeria               |1997-01-28|29  |18-29    |27234.28 |Under 50K  |Health Coach IV             |6                 |
+|11 |Susan Perkins  |sperkinsa@patch.com     |patch.com       |Female|Russia                |NULL      |NULL|Unknown  |210001.95|200K+      |NULL                        |4                 |
+|12 |Alice Berry    |aberryb@wikipedia.org   |wikipedia.org   |Female|China                 |1968-08-12|58  |50-59    |22944.53 |Under 50K  |Quality Engineer            |6                 |
+|13 |Justin Berry   |jberryc@usatoday.com    |usatoday.com    |Male  |Zambia                |1975-08-15|51  |50-59    |44165.46 |Under 50K  |Structural Analysis Engineer|6                 |
+|14 |Kathy Reynolds |kreynoldsd@redcross.org |redcross.org    |Female|Bosnia and Herzegovina|1970-06-27|56  |50-59    |286592.99|200K+      |Librarian                   |6                 |
+|15 |Dorothy Hudson |dhudsone@blogger.com    |blogger.com     |Female|Japan                 |1989-12-20|36  |30-39    |157099.71|100K-199K  |Nurse Practicioner          |6                 |
+|16 |Bruce Willis   |bwillisf@bluehost.com   |bluehost.com    |Male  |Brazil                |NULL      |NULL|Unknown  |239100.65|200K+      |NULL                        |4                 |
+|17 |Emily Andrews  |eandrewsg@cornell.edu   |cornell.edu     |Female|Russia                |1990-04-13|36  |30-39    |116800.65|100K-199K  |Food Chemist                |6                 |
+|18 |Stephen Wallace|swallaceh@netvibes.com  |netvibes.com    |Male  |Ukraine               |1978-01-15|48  |40-49    |248877.99|200K+      |Account Representative I    |6                 |
+|19 |Clarence Lawson|clawsoni@vkontakte.ru   |vkontakte.ru    |Male  |Russia                |NULL      |NULL|Unknown  |177122.99|100K-199K  |NULL                        |4                 |
+|20 |Rebecca Bell   |rbellj@bandcamp.com     |bandcamp.com    |Female|China                 |NULL      |NULL|Unknown  |137251.19|100K-199K  |NULL                        |4                 |
++---+---------------+------------------------+----------------+------+----------------------+----------+----+---------+---------+-----------+----------------------------+------------------+
+only showing top 20 rows
+
+======================================================================
+DATA QUALITY SUMMARY
+======================================================================
+Total records       : 1000
+Missing salaries    : 68
+Missing birthdates  : 197
+Invalid birthdates : 1
+Invalid emails     : 16
+Invalid IPs        : 0
+Invalid ages       : 198
+HTML comments      : 6
+
+========== COUNTRY ANALYSIS ==========
++--------------+-----------+----------+----------+----------+-------------+
+|country       |total_users|avg_salary|min_salary|max_salary|unique_titles|
++--------------+-----------+----------+----------+----------+-------------+
+|China         |189        |157365.25 |13375.17  |284737.57 |102          |
+|Indonesia     |97         |155415.07 |13673.35  |284608.82 |64           |
+|Russia        |62         |146614.46 |15592.05  |286061.25 |39           |
+|Philippines   |45         |153075.9  |15754.79  |279439.22 |34           |
+|Brazil        |38         |129877.1  |15270.86  |275697.75 |27           |
+|Portugal      |38         |137044.48 |14247.62  |283771.86 |31           |
+|France        |37         |144113.55 |17658.63  |280888.16 |25           |
+|Poland        |35         |145860.13 |14673.04  |285036.95 |25           |
+|Sweden        |25         |163599.24 |46534.77  |268319.27 |20           |
+|Japan         |20         |143297.12 |12380.49  |284728.99 |16           |
+|Canada        |19         |126587.81 |19078.57  |279603.19 |17           |
+|United States |17         |98591.88  |25806.31  |247939.52 |10           |
+|Ukraine       |16         |143375.12 |38917.41  |248877.99 |12           |
+|Peru          |14         |155788.09 |39139.25  |279008.12 |10           |
+|Colombia      |14         |125766.65 |15423.09  |263060.59 |10           |
+|Argentina     |13         |124697.52 |43533.38  |271799.8  |10           |
+|Thailand      |12         |142224.02 |42300.34  |268876.47 |7            |
+|Czech Republic|12         |126007.0  |24951.68  |234820.44 |12           |
+|Nigeria       |11         |126952.18 |22866.39  |279697.41 |11           |
+|Mexico        |11         |122097.14 |19237.35  |273837.25 |7            |
++--------------+-----------+----------+----------+----------+-------------+
+only showing top 20 rows
+
+========== JOB SALARY ANALYSIS ==========
++--------------------------+--------------+----------+----------+----------+
+|title                     |employee_count|avg_salary|min_salary|max_salary|
++--------------------------+--------------+----------+----------+----------+
+|Accounting Assistant III  |1             |281518.5  |281518.5  |281518.5  |
+|Automation Specialist IV  |1             |279373.0  |279373.0  |279373.0  |
+|Web Designer II           |1             |279274.96 |279274.96 |279274.96 |
+|Office Assistant I        |1             |274191.96 |274191.96 |274191.96 |
+|Automation Specialist III |1             |272850.84 |272850.84 |272850.84 |
+|Geologist II              |1             |265265.73 |265265.73 |265265.73 |
+|Health Coach II           |1             |262448.45 |262448.45 |262448.45 |
+|Web Designer I            |4             |261843.37 |241297.92 |278872.56 |
+|Database Administrator I  |1             |258321.2  |258321.2  |258321.2  |
+|Systems Administrator II  |2             |249663.82 |249663.82 |249663.82 |
+|Media Manager II          |1             |248037.18 |248037.18 |248037.18 |
+|Office Assistant IV       |1             |232187.53 |232187.53 |232187.53 |
+|Software Test Engineer I  |1             |231067.84 |231067.84 |231067.84 |
+|Assistant Media Planner   |4             |230757.31 |165534.61 |284608.82 |
+|Automation Specialist I   |2             |230167.5  |207226.25 |253108.75 |
+|Biostatistician I         |2             |229308.44 |229308.44 |229308.44 |
+|Systems Administrator I   |3             |221426.55 |164299.53 |278553.57 |
+|Software Test Engineer III|1             |214031.75 |214031.75 |214031.75 |
+|Legal Assistant           |7             |212680.81 |80807.72  |259094.47 |
+|Accountant IV             |2             |212393.14 |150280.17 |274506.11 |
++--------------------------+--------------+----------+----------+----------+
+only showing top 20 rows
+
+========== GENDER ANALYSIS ==========
++------+-----------+----------+-------+
+|gender|total_users|avg_salary|avg_age|
++------+-----------+----------+-------+
+|Female|482        |143737.76 |48.1   |
+|Male  |451        |154647.54 |47.56  |
+|NULL  |67         |NULL      |47.07  |
++------+-----------+----------+-------+
+
+
+========== AGE GROUP ANALYSIS ==========
++---------+-----------+----------+
+|age_group|total_users|avg_salary|
++---------+-----------+----------+
+|18-29    |84         |157685.89 |
+|30-39    |188        |132795.07 |
+|40-49    |166        |160122.03 |
+|50-59    |159        |150585.85 |
+|60+      |205        |149398.21 |
+|Unknown  |198        |149574.82 |
++---------+-----------+----------+
+
+
+========== REGISTRATION TREND ==========
++-----------------+------------------+-------------+
+|registration_year|registration_month|registrations|
++-----------------+------------------+-------------+
+|2016             |2                 |1000         |
++-----------------+------------------+-------------+
+
+
+========== EMAIL DOMAIN ANALYSIS ==========
++-------------------+----------+
+|email_domain       |user_count|
++-------------------+----------+
+|NULL               |16        |
+|cargocollective.com|8         |
+|digg.com           |7         |
+|paypal.com         |7         |
+|dagondesign.com    |7         |
+|phpbb.com          |6         |
+|theglobeandmail.com|6         |
+|opensource.org     |6         |
+|woothemes.com      |6         |
+|diigo.com          |6         |
+|dion.ne.jp         |5         |
+|usa.gov            |5         |
+|com.com            |5         |
+|omniture.com       |5         |
+|cdc.gov            |5         |
+|webeden.co.uk      |5         |
+|eepurl.com         |5         |
+|skype.com          |5         |
+|mit.edu            |5         |
+|dyndns.org         |5         |
++-------------------+----------+
+only showing top 20 rows
+
+========== DATA QUALITY ANALYSIS ==========
++---------------------+------------+-----------------+
+|data_quality_category|record_count|avg_quality_score|
++---------------------+------------+-----------------+
+|High                 |802         |5.92             |
+|Medium               |198         |3.91             |
++---------------------+------------+-----------------+
+
+
+========== SALARY STATISTICS ==========
++--------------+--------------+--------------+
+|average_salary|minimum_salary|maximum_salary|
++--------------+--------------+--------------+
+|149005.36     |12380.49      |286592.99     |
++--------------+--------------+--------------+
+
+
+======================================================================
+WRITING SILVER DATA
+======================================================================
+Silver data written to:
+hdfs://localhost:9000/user/hadoop/project/silver/userdata_cleaned
+
+Writing Gold: Country Analysis
+Writing Gold: Job Salary Analysis
+Writing Gold: Gender Analysis
+Writing Gold: Age Analysis
+Writing Gold: Registration Analysis
+Writing Gold: Email Domain Analysis
+Writing Gold: Data Quality Analysis
+
+========== WRITING CSV EXPORTS ==========
+
+======================================================================
+ETL PIPELINE COMPLETED SUCCESSFULLY
+======================================================================
+
+Silver:
+hdfs://localhost:9000/user/hadoop/project/silver/userdata_cleaned
+
+Gold:
+hdfs://localhost:9000/user/hadoop/project/gold
+
+Total records processed:
+1000

@@ -1,0 +1,3 @@
+# PySpark 4.1+ is required: userdata_parquet_etl.py imports try_to_date,
+# which was added to pyspark.sql.functions in 4.1.
+pyspark>=4.1

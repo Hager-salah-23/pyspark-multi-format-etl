@@ -1,0 +1,295 @@
+============================================================
+READING AIRPORT JSON DATA
+============================================================
+
+========== RAW DATA ==========
++-----------+----+-------+-------+---------+----------------------------------------+
+|city       |code|country|lat    |lon      |name                                    |
++-----------+----+-------+-------+---------+----------------------------------------+
+|Atlanta    |ATL |US     |33.6407|-84.4277 |Hartsfield-Jackson Atlanta International|
+|Beijing    |PEK |CN     |40.0801|116.5846 |Beijing Capital International           |
+|Dubai      |DXB |AE     |25.2528|55.3644  |Dubai International                     |
+|Los Angeles|LAX |US     |33.9425|-118.4081|Los Angeles International               |
+|Tokyo      |HND |JP     |35.5494|139.7798 |Tokyo Haneda                            |
+|Chicago    |ORD |US     |41.9742|-87.9073 |O'Hare International                    |
+|London     |LHR |GB     |51.47  |-0.4543  |London Heathrow                         |
+|Shanghai   |PVG |CN     |31.1443|121.8083 |Shanghai Pudong International           |
+|Paris      |CDG |FR     |49.0097|2.5479   |Paris Charles de Gaulle                 |
+|Dallas     |DFW |US     |32.8998|-97.0403 |Dallas/Fort Worth International         |
+|Guangzhou  |CAN |CN     |23.3924|113.2988 |Guangzhou Baiyun International          |
+|Amsterdam  |AMS |NL     |52.3105|4.7683   |Amsterdam Schiphol                      |
+|Frankfurt  |FRA |DE     |50.0379|8.5622   |Frankfurt Airport                       |
+|Istanbul   |IST |TR     |41.2753|28.7519  |Istanbul Airport                        |
+|Singapore  |SIN |SG     |1.3644 |103.9915 |Singapore Changi                        |
+|Seoul      |ICN |KR     |37.4602|126.4407 |Incheon International                   |
+|Denver     |DEN |US     |39.8561|-104.6737|Denver International                    |
+|Bangkok    |BKK |TH     |13.69  |100.7501 |Suvarnabhumi Airport                    |
+|New York   |JFK |US     |40.6413|-73.7781 |John F. Kennedy International           |
+|Hong Kong  |HKG |HK     |22.308 |113.9185 |Hong Kong International                 |
++-----------+----+-------+-------+---------+----------------------------------------+
+only showing top 20 rows
+
+========== SCHEMA ==========
+root
+ |-- city: string (nullable = true)
+ |-- code: string (nullable = true)
+ |-- country: string (nullable = true)
+ |-- lat: double (nullable = true)
+ |-- lon: double (nullable = true)
+ |-- name: string (nullable = true)
+
+
+========== RAW DATA ==========
++-----------+----+-------+-------+---------+----------------------------------------+
+|city       |code|country|lat    |lon      |name                                    |
++-----------+----+-------+-------+---------+----------------------------------------+
+|Atlanta    |ATL |US     |33.6407|-84.4277 |Hartsfield-Jackson Atlanta International|
+|Beijing    |PEK |CN     |40.0801|116.5846 |Beijing Capital International           |
+|Dubai      |DXB |AE     |25.2528|55.3644  |Dubai International                     |
+|Los Angeles|LAX |US     |33.9425|-118.4081|Los Angeles International               |
+|Tokyo      |HND |JP     |35.5494|139.7798 |Tokyo Haneda                            |
+|Chicago    |ORD |US     |41.9742|-87.9073 |O'Hare International                    |
+|London     |LHR |GB     |51.47  |-0.4543  |London Heathrow                         |
+|Shanghai   |PVG |CN     |31.1443|121.8083 |Shanghai Pudong International           |
+|Paris      |CDG |FR     |49.0097|2.5479   |Paris Charles de Gaulle                 |
+|Dallas     |DFW |US     |32.8998|-97.0403 |Dallas/Fort Worth International         |
+|Guangzhou  |CAN |CN     |23.3924|113.2988 |Guangzhou Baiyun International          |
+|Amsterdam  |AMS |NL     |52.3105|4.7683   |Amsterdam Schiphol                      |
+|Frankfurt  |FRA |DE     |50.0379|8.5622   |Frankfurt Airport                       |
+|Istanbul   |IST |TR     |41.2753|28.7519  |Istanbul Airport                        |
+|Singapore  |SIN |SG     |1.3644 |103.9915 |Singapore Changi                        |
+|Seoul      |ICN |KR     |37.4602|126.4407 |Incheon International                   |
+|Denver     |DEN |US     |39.8561|-104.6737|Denver International                    |
+|Bangkok    |BKK |TH     |13.69  |100.7501 |Suvarnabhumi Airport                    |
+|New York   |JFK |US     |40.6413|-73.7781 |John F. Kennedy International           |
+|Hong Kong  |HKG |HK     |22.308 |113.9185 |Hong Kong International                 |
++-----------+----+-------+-------+---------+----------------------------------------+
+only showing top 20 rows
+
+========== DATA SCHEMA ==========
+root
+ |-- city: string (nullable = true)
+ |-- code: string (nullable = true)
+ |-- country: string (nullable = true)
+ |-- lat: double (nullable = true)
+ |-- lon: double (nullable = true)
+ |-- name: string (nullable = true)
+
+
+========== DATASET INFORMATION ==========
+Number of airports : 30
+Number of columns : 6
+
+Columns:
+['city', 'code', 'country', 'lat', 'lon', 'name']
+
+============================================================
+DATA QUALITY CHECKS
+============================================================
+Missing airport codes : 0
+Missing airport names : 0
+Missing cities        : 0
+Missing countries     : 0
+Missing latitude      : 0
+Missing longitude     : 0
+
+========== DUPLICATE AIRPORT CHECK ==========
+Number of duplicated airport codes: 0
+
+========== CLEANING DATA ==========
+Airports after duplicate removal: 30
+
+========== LOCATION VALIDATION ==========
+
+========== CLEANED DATA ==========
++------------+----+-------+-------+---------+----------------------------------------+--------------+----------+----------------+------------------+
+|city        |code|country|lat    |lon      |name                                    |location_valid|hemisphere|longitude_region|location_category |
++------------+----+-------+-------+---------+----------------------------------------+--------------+----------+----------------+------------------+
+|Amsterdam   |AMS |NL     |52.3105|4.7683   |Amsterdam Schiphol                      |true          |Northern  |Eastern         |Northern & Eastern|
+|Atlanta     |ATL |US     |33.6407|-84.4277 |Hartsfield-Jackson Atlanta International|true          |Northern  |Western         |Northern & Western|
+|Barcelona   |BCN |ES     |41.2974|2.0833   |Barcelona–El Prat                       |true          |Northern  |Eastern         |Northern & Eastern|
+|Bangkok     |BKK |TH     |13.69  |100.7501 |Suvarnabhumi Airport                    |true          |Northern  |Eastern         |Northern & Eastern|
+|Guangzhou   |CAN |CN     |23.3924|113.2988 |Guangzhou Baiyun International          |true          |Northern  |Eastern         |Northern & Eastern|
+|Paris       |CDG |FR     |49.0097|2.5479   |Paris Charles de Gaulle                 |true          |Northern  |Eastern         |Northern & Eastern|
+|Denver      |DEN |US     |39.8561|-104.6737|Denver International                    |true          |Northern  |Western         |Northern & Western|
+|Dallas      |DFW |US     |32.8998|-97.0403 |Dallas/Fort Worth International         |true          |Northern  |Western         |Northern & Western|
+|Dubai       |DXB |AE     |25.2528|55.3644  |Dubai International                     |true          |Northern  |Eastern         |Northern & Eastern|
+|Frankfurt   |FRA |DE     |50.0379|8.5622   |Frankfurt Airport                       |true          |Northern  |Eastern         |Northern & Eastern|
+|Hong Kong   |HKG |HK     |22.308 |113.9185 |Hong Kong International                 |true          |Northern  |Eastern         |Northern & Eastern|
+|Tokyo       |HND |JP     |35.5494|139.7798 |Tokyo Haneda                            |true          |Northern  |Eastern         |Northern & Eastern|
+|Seoul       |ICN |KR     |37.4602|126.4407 |Incheon International                   |true          |Northern  |Eastern         |Northern & Eastern|
+|Istanbul    |IST |TR     |41.2753|28.7519  |Istanbul Airport                        |true          |Northern  |Eastern         |Northern & Eastern|
+|New York    |JFK |US     |40.6413|-73.7781 |John F. Kennedy International           |true          |Northern  |Western         |Northern & Western|
+|Kuala Lumpur|KUL |MY     |2.7456 |101.7099 |Kuala Lumpur International              |true          |Northern  |Eastern         |Northern & Eastern|
+|Los Angeles |LAX |US     |33.9425|-118.4081|Los Angeles International               |true          |Northern  |Western         |Northern & Western|
+|London      |LHR |GB     |51.47  |-0.4543  |London Heathrow                         |true          |Northern  |Western         |Northern & Western|
+|Madrid      |MAD |ES     |40.4983|-3.5676  |Adolfo Suárez Madrid–Barajas            |true          |Northern  |Western         |Northern & Western|
+|Mexico City |MEX |MX     |19.4361|-99.0719 |Mexico City International               |true          |Northern  |Western         |Northern & Western|
++------------+----+-------+-------+---------+----------------------------------------+--------------+----------+----------------+------------------+
+only showing top 20 rows
+
+============================================================
+AIRPORTS BY COUNTRY
+============================================================
++-------+-------------+
+|country|airport_count|
++-------+-------------+
+|US     |8            |
+|CN     |3            |
+|DE     |2            |
+|ES     |2            |
+|JP     |2            |
+|NL     |1            |
+|MX     |1            |
+|HK     |1            |
+|AU     |1            |
+|CA     |1            |
+|GB     |1            |
+|TR     |1            |
+|KR     |1            |
+|MY     |1            |
+|AE     |1            |
+|FR     |1            |
+|SG     |1            |
+|TH     |1            |
++-------+-------------+
+
+
+============================================================
+AIRPORTS BY CITY
+============================================================
++-------------+-------------+
+|city         |airport_count|
++-------------+-------------+
+|Tokyo        |2            |
+|Guangzhou    |1            |
+|Madrid       |1            |
+|Dallas       |1            |
+|Singapore    |1            |
+|Frankfurt    |1            |
+|Beijing      |1            |
+|Los Angeles  |1            |
+|Kuala Lumpur |1            |
+|San Francisco|1            |
+|London       |1            |
+|Sydney       |1            |
+|Mexico City  |1            |
+|Paris        |1            |
+|Chicago      |1            |
+|Istanbul     |1            |
+|Toronto      |1            |
+|Barcelona    |1            |
+|Hong Kong    |1            |
+|Amsterdam    |1            |
++-------------+-------------+
+only showing top 20 rows
+
+============================================================
+AIRPORTS BY HEMISPHERE
+============================================================
++----------+-------------+
+|hemisphere|airport_count|
++----------+-------------+
+|  Southern|            1|
+|  Northern|           29|
++----------+-------------+
+
+
+============================================================
+AIRPORTS BY LONGITUDE REGION
+============================================================
++----------------+-------------+
+|longitude_region|airport_count|
++----------------+-------------+
+|         Eastern|           18|
+|         Western|           12|
++----------------+-------------+
+
+
+============================================================
+AIRPORTS BY LOCATION CATEGORY
+============================================================
++------------------+-------------+
+|location_category |airport_count|
++------------------+-------------+
+|Northern & Eastern|17           |
+|Northern & Western|12           |
+|Southern & Eastern|1            |
++------------------+-------------+
+
+
+============================================================
+GEOGRAPHICAL STATISTICS
+============================================================
++----------------+-----------------+----------------+----------------+-----------------+-----------------+
+|average_latitude|average_longitude|minimum_latitude|maximum_latitude|minimum_longitude|maximum_longitude|
++----------------+-----------------+----------------+----------------+-----------------+-----------------+
+|31.95           |16.4             |-33.94          |52.31           |-122.38          |151.18           |
++----------------+-----------------+----------------+----------------+-----------------+-----------------+
+
+
+========== NORTHERNMOST AIRPORT ==========
++----+------------------+---------+-------+-------+------+
+|code|name              |city     |country|lat    |lon   |
++----+------------------+---------+-------+-------+------+
+|AMS |Amsterdam Schiphol|Amsterdam|NL     |52.3105|4.7683|
++----+------------------+---------+-------+-------+------+
+
+
+========== SOUTHERNMOST AIRPORT ==========
++----+----------------------+------+-------+--------+--------+
+|code|name                  |city  |country|lat     |lon     |
++----+----------------------+------+-------+--------+--------+
+|SYD |Sydney Kingsford Smith|Sydney|AU     |-33.9399|151.1753|
++----+----------------------+------+-------+--------+--------+
+
+
+========== EASTERNMOST AIRPORT ==========
++----+----------------------+------+-------+--------+--------+
+|code|name                  |city  |country|lat     |lon     |
++----+----------------------+------+-------+--------+--------+
+|SYD |Sydney Kingsford Smith|Sydney|AU     |-33.9399|151.1753|
++----+----------------------+------+-------+--------+--------+
+
+
+========== WESTERNMOST AIRPORT ==========
++----+---------------------------+-------------+-------+-------+--------+
+|code|name                       |city         |country|lat    |lon     |
++----+---------------------------+-------------+-------+-------+--------+
+|SFO |San Francisco International|San Francisco|US     |37.6213|-122.379|
++----+---------------------------+-------------+-------+-------+--------+
+
+
+========== LOCATION QUALITY ==========
+Valid locations   : 30
+Invalid locations : 0
+
+============================================================
+WRITING CLEAN PARQUET DATA
+============================================================
+Clean Parquet data written successfully.
+
+Writing country analysis...
+Writing city analysis...
+Writing hemisphere analysis...
+Writing location analysis...
+
+========== WRITING CSV FILES ==========
+
+============================================================
+PROJECT COMPLETED SUCCESSFULLY
+============================================================
+Total airports processed : 30
+Final airports           : 30
+
+HDFS output location:
+hdfs://localhost:9000/user/hadoop/project/airport_output
+
+Generated datasets:
+  - clean_airports
+  - country_analysis
+  - city_analysis
+  - hemisphere_analysis
+  - location_analysis
+  - csv/
+
